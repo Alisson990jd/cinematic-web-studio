@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { 
   Film, 
   Image, 
@@ -23,13 +24,15 @@ const mediaItems = [
 ];
 
 const MediaLibrary: React.FC = () => {
+  const isMobile = useIsMobile();
+  
   return (
     <div className="h-full flex flex-col bg-editor-bg-dark border-r border-editor-border">
       <div className="panel-header">
         <span>Media Library</span>
       </div>
       
-      <div className="p-3 border-b border-editor-border">
+      <div className={`${isMobile ? 'p-2' : 'p-3'} border-b border-editor-border`}>
         <div className="flex space-x-2 mb-3">
           <button className="editor-btn">
             <Upload className="h-4 w-4" />
@@ -40,7 +43,7 @@ const MediaLibrary: React.FC = () => {
           <div className="relative flex-1">
             <Search className="h-4 w-4 absolute left-2 top-1/2 transform -translate-y-1/2 text-editor-text-secondary" />
             <Input 
-              placeholder="Search media" 
+              placeholder="Search" 
               className="h-8 pl-8 text-sm bg-editor-bg-darker border-editor-border" 
             />
           </div>
@@ -66,7 +69,7 @@ const MediaLibrary: React.FC = () => {
         {mediaItems.map(item => (
           <div 
             key={item.id} 
-            className="p-2 mb-2 rounded cursor-pointer hover:bg-editor-bg-light flex items-center text-sm"
+            className={`p-2 mb-2 rounded cursor-pointer hover:bg-editor-bg-light flex items-center ${isMobile ? 'text-xs' : 'text-sm'}`}
             draggable="true"
           >
             {item.type === 'video' && <Film className="h-4 w-4 mr-2 text-editor-clip-video" />}
@@ -77,7 +80,9 @@ const MediaLibrary: React.FC = () => {
             <div className="flex-1 truncate">
               <div className="font-medium truncate">{item.name}</div>
               {item.duration && (
-                <div className="text-xs text-editor-text-secondary">{item.duration}</div>
+                <div className={`${isMobile ? 'text-[10px]' : 'text-xs'} text-editor-text-secondary`}>
+                  {item.duration}
+                </div>
               )}
             </div>
           </div>
